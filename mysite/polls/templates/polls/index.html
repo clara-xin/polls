@@ -1,0 +1,74 @@
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% load static %}
+
+<!-- https://getbootstrap.com/docs/5.3/components/navbar/ -->
+<!-- https://getbootstrap.com/docs/5.3/examples/headers/ -->
+<!-- https://stackoverflow.com/questions/75776309/combine-url-tag-with-bootstrap-button-tag -->
+<!-- https://getbootstrap.com/docs/5.0/examples/sticky-footer/ -->
+
+<nav class="navbar">
+    <div class="container">
+        <header class="d-flex justify-content-center py-3">
+            <div class="btn-group">
+                {% url 'polls:index' as the_link %}
+                {% bootstrap_button "All Polls" button_type="link" button_class="btn-primary" href=the_link %}
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    {% if latest_question_list %}
+                        {% for question in latest_question_list %}
+                        <li><a class="dropdown-item" href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+                        {% endfor %}
+                    {% else %}
+                        <p>No polls are available.</p>
+                    {% endif %}
+                </ul>
+            </div>
+            <ul class="nav">
+                <li class="nav-item"><a href="{% url 'polls:add' %}" class="nav-link">Create a Poll</a></li>
+            </ul>
+        </header>
+    </div>
+</nav>
+
+
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h4>Polls</h4>
+        </div>
+        <div class="card-body">
+            {% if latest_question_list %}
+            <ul>
+            {% for question in latest_question_list %}
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}
+            </a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+        <p>No polls are available.</p>
+        {% endif %}
+</div>
+</div>
+</div>
+
+<body class="d-flex flex-column h-100">
+
+    <footer class="footer mt-auto py-3 bg-light">
+      <div class="container">
+        <span class="text-muted">Created by Clara Xin for CS 3240, 2023.</span>
+      </div>
+    </footer>
+</body>
